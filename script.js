@@ -15,6 +15,7 @@ const operationsTabs = document.querySelectorAll('.operations__tab');
 const nav = document.querySelector('.nav');
 const header = document.querySelector('.header__title');
 const sections = document.querySelectorAll('.section');
+const lazyImages = document.querySelectorAll('img[data-src]');
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -109,4 +110,22 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 sections.forEach(s => {
   s.classList.add('section--hidden');
   sectionObserver.observe(s);
+});
+
+const loadImage = function (entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.setAttribute('src', entry.target.dataset.src);
+  entry.target.addEventListener('load', () => {
+    entry.target.classList.remove('lazy-img');
+  });
+  imageObserver.unobserve(entry.target);
+};
+const imageObserver = new IntersectionObserver(loadImage, {
+  root: null,
+  threshold: 0.8,
+});
+
+lazyImages.forEach(i => {
+  imageObserver.observe(i);
 });
