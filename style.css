@@ -38,7 +38,9 @@ body {
   padding: 15rem 3rem;
   border-top: 1px solid #ddd;
 
-  transition: transform 1s, opacity 1s;
+  transition:
+    transform 1s,
+    opacity 1s;
 }
 
 .section--hidden {
@@ -378,7 +380,6 @@ h4 {
   height: 50rem;
   margin: 0 auto;
   position: relative;
-
   /* IN THE END */
   overflow: hidden;
 }
@@ -397,6 +398,9 @@ h4 {
   transition: transform 1s;
 }
 
+.no-animation .slide {
+  transition: none;
+}
 .slide > img {
   /* Only for images that have different size than slide */
   width: 100%;
@@ -408,7 +412,6 @@ h4 {
   position: absolute;
   top: 50%;
   z-index: 10;
-
   border: none;
   background: rgba(255, 255, 255, 0.7);
   font-family: inherit;
@@ -418,6 +421,8 @@ h4 {
   width: 5.5rem;
   font-size: 3.25rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 
 .slider__btn--left {

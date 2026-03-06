@@ -16,7 +16,10 @@ const nav = document.querySelector('.nav');
 const header = document.querySelector('.header__title');
 const sections = document.querySelectorAll('.section');
 const lazyImages = document.querySelectorAll('img[data-src]');
-
+const slides = document.querySelectorAll('.slide');
+const btnRight = document.querySelector('.slider__btn--right');
+const btnLeft = document.querySelector('.slider__btn--left');
+const dots = document.querySelector('.dots');
 const openModal = function () {
   modal.classList.remove('hidden');
   overlay.classList.remove('hidden');
@@ -129,3 +132,58 @@ const imageObserver = new IntersectionObserver(loadImage, {
 lazyImages.forEach(i => {
   imageObserver.observe(i);
 });
+
+const goToSlide = function (slide) {
+  slides.forEach((s, i) => {
+    s.style.transform = `translateX(${100 * (i - slide)}%)`;
+  });
+};
+const addDots = function () {
+  for (let i = 0; i < slides.length; i++) {
+    dots.insertAdjacentHTML(
+      'beforeend',
+      `<button class="dots__dot" data-slide="${i}"></button>`,
+    );
+  }
+  document.querySelector('.dots__dot').classList.add('dots__dot--active');
+};
+const init = function () {
+  goToSlide(0);
+  addDots();
+};
+
+const setActiveDot = function (i) {
+  document
+    .querySelectorAll('.dots__dot')
+    .forEach(d => d.classList.remove('dots__dot--active'));
+  document
+    .querySelector(`.dots__dot[data-slide='${i}']`)
+    .classList.add('dots__dot--active');
+};
+
+let currentSlide = 0;
+const maxSlide = slides.length - 1;
+btnRight.addEventListener('click', () => {
+  currentSlide++;
+  if (currentSlide > maxSlide) {
+    currentSlide = 0;
+  }
+  goToSlide(currentSlide);
+  setActiveDot(currentSlide);
+});
+btnLeft.addEventListener('click', () => {
+  currentSlide--;
+  if (currentSlide < 0) {
+    currentSlide = maxSlide;
+  }
+  goToSlide(currentSlide);
+  setActiveDot(currentSlide);
+});
+
+document.body.classList.add('no-animation');
+
+init();
+
+setTimeout(() => {
+  document.body.classList.remove('no-animation');
+}, 0);
